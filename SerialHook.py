@@ -2,18 +2,23 @@ import serial
 import threading
 import time
 
+def serial_ports():
+    ports = [f"COM{i}" for i in range(256)]
+    available_ports = []
+    for port in ports:
+        try:
+            s = serial.Serial(port)
+            s.close()
+            available_ports.append(port)
+        except (OSError, serial.SerialException):
+            pass
+    return available_ports
+
 def serial_communication(port, baudrate, ser : serial.Serial):
     try:
         print(f"Connessione aperta sulla porta {port} con baudrate {baudrate}")
-        
         while True:
-            # Chiede all'utente di inviare un messaggio
-            to_send = input("\nInserisci il messaggio da inviare (o 'exit' per uscire): ")
-            if to_send.lower() == 'exit':
-                print("Chiusura della connessione...")
-                break
-            
-            # Invia il messaggio tramite la porta seriale
+            to_send = input("\nInserisci il messaggio da inviare: ")
             ser.write(to_send.encode('utf-8'))
             print(f"\nMessaggio inviato: {to_send}")
     except serial.SerialException as e:
@@ -36,14 +41,16 @@ def continuous_read(ser, delay_ms):
             print("\nInterruzione manuale del thread di lettura.")
 
 if __name__ == "__main__":
-    # Specifica la porta e il baudrate
-    porta = input("Inserisci la porta seriale (es. COM3): ")
-    baudrate = int(input("Inserisci il baudrate (es. 9600): "))
-   
-
+    available_ports = serial_ports()
+    if not available_ports:
+        print("Nessuna porta seriale disponibile.")
+        exit(1)
+    porta = input(f"Inserisci la porta seriale (es. COM3):")
+    while porta not in available_ports:
+        print(f"La porta {porta} non è disponibile. Porte disponibili: {', '.join(available_ports)}")
+        porta = input("Inserisci una porta seriale valida (es. COM3):")
+    baudrate = 9600
     ser = serial.Serial(porta, baudrate, timeout=1)
-    delay_ms = int(input("Inserisci il delay in millisecondi per la lettura continua: "))
-
-    read_thread = threading.Thread(target=continuous_read, args=(ser, delay_ms), daemon=True)
+    read_thread = threading.Thread(target=continuous_read, args=(ser, 1000), daemon=True)
     read_thread.start()
     serial_communication(porta, baudrate, ser)
