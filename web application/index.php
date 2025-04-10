@@ -11,7 +11,7 @@ if ($conn === false) {
     die("Failed to connect to $host:$port: " . socket_strerror(socket_last_error($socket)));
 }
 
-$data = "si";
+$data = "lore";
 
 socket_write($socket, $data, strlen($data));
 
