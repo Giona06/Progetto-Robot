@@ -1,0 +1,7 @@
+import serial
+
+ser = serial.Serial('COM4', 9600)
+
+ser.write(b'\xAA\x01\x16\x02\x00\x00\xa0\x41\xf4\xFF')
+
+ser.close()
