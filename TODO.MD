@@ -1,5 +1,4 @@
 # TODO
 
-1. Parte gestione dati php
-2. Fetch di js per inviare comandi al robot
-3. settare tutte le tempistiche per la sincronizzazione
+1. Abbellire la pagina web
+2. finire il readme, con installazione/utilizzo + spiegazione progretto
