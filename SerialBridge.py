@@ -5,6 +5,9 @@ import time
 import requests
 from requests.auth import HTTPBasicAuth
 import struct
+import json
+
+DEBUG = True
 
 #Costanti Server
 PHP_SERVER_URL = 'http://localhost/capolavoro/ricezione.php'
@@ -58,17 +61,19 @@ def selezionaBaudrate():
         except ValueError:
             print("Inserisci un numero valido.")
 
-porta = selezionaPortaSeriale()
-baudrate = selezionaBaudrate()
+porta = "COM5" if DEBUG else selezionaPortaSeriale()
+baudrate = 9600 if DEBUG else selezionaBaudrate()
 
 print(f"Porta selezionata: {porta} - Baudrate: {baudrate}")
 
-ser = serial.Serial(porta, baudrate, timeout=1)
+ser = serial.Serial(porta, baudrate, timeout=0.1)
 
 #Struttura pacchetto [START_BYTE(1), HEADER_FOLLOW_LINE(1), DATA_FOLLOWLINE(1), HEADER_ULTRASONIC(1), DATA_ULTRASONIC(4), CHECKSUM(1), END_BYTE(1)]
 START_BYTE = b'\xaa'
 HEADER_FOLLOW_LINE = b'\x01'
 HEADER_ULTRASONIC = b'\x02'
+HEADER_DIREZIONE = b'\x03'
+HEADER_VELOCITA = b'\x04'
 END_BYTE = b'\xff'
 
 LENGTH_FOLLOW_LINE = 1
@@ -100,26 +105,32 @@ def unpack():
             if end != END_BYTE:
                 print("Pacchetto non valido")
                 continue
-
+            
             checksum_c = header_fl[0] ^ data_fl[0] ^ header_us[0]
             for byte in data_us:
                 checksum_c ^= byte
-            checksum_c = bytes([checksum_c])
+            checksum_c = struct.pack('B', checksum_c)
 
             if checksum_c != checksum:
                 print("Checksum non valido")
                 continue
             
-            valore_fl = struct.unpack('<b', data_fl)[0]
-            valore_us = struct.unpack('<f', data_us)[0]
+            valore_fl = struct.unpack('B', data_fl)[0] # B = unsigned char (1 byte)
+            valore_us = struct.unpack('<f', data_us)[0] # <f = float(4 bytes) ordine Little Endian
 
             return {
                 "FollowLine": valore_fl,
                 "Ultrasonic": valore_us
             }
-            
     
-
+def pack(data):
+    """Pack dei dati da inviare alla seriale"""
+    data_dir = struct.pack('B', data["Direzione"])
+    data_vel = struct.pack('B', data["Velocita"])
+    checksum = HEADER_DIREZIONE[0] ^ data_dir[0] ^ HEADER_VELOCITA[0] ^ data_vel[0]
+    checksum = struct.pack('B', checksum)
+    packet = START_BYTE + HEADER_DIREZIONE + data_dir + HEADER_VELOCITA + data_vel + checksum + END_BYTE
+    return packet
 
 def serialListener():
     """Legge i dati dalla seriale e li invia al server PHP"""
@@ -133,7 +144,7 @@ def serialListener():
                     print(f"[PHP] ← {response.status_code}")
         except Exception as e:
             print(f"[ERRORE POST] {e}")
-            time.sleep(1)
+            time.sleep(0.1)
 
 def socketListener():
     """Riceve dati da socket e li invia alla seriale"""
@@ -145,10 +156,13 @@ def socketListener():
             conn, addr = s.accept()
             with conn:
                 print(f"[SOCKET] Connessione da {addr}")
-                data = conn.recv(1024).decode().strip()
+                data = conn.recv(1024)
                 if data:
+                    data = json.loads(data)
                     print(f"[PHP → SERIALE] {data}")
-                    ser.write((data + '\n').encode())
+                    packet = pack(data)
+                    print(f"[SERIALE] → {packet}")
+                    ser.write(packet)
 
 threading.Thread(target=serialListener, daemon=True).start()
 threading.Thread(target=socketListener, daemon=True).start()
