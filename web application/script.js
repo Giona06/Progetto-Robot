@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.getElementsByClassName('direzione');
+    const buttons = document.getElementsByClassName('comando');
     Array.from(buttons).forEach((btn) => {
         btn.addEventListener('mousedown', () => {
             console.log('Mouse up:', btn.value);
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: `Direzione=${btn.value}&Velocita=${velocita}`
+                body: `Comando=${btn.value}&Velocita=${velocita}`
             })
             .catch(error => {
                 console.error('Errore durante il fetch (mousedown):', error);
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: `Direzione=0&Velocita=0` 
+                body: `Comando=0&Velocita=0` 
             })
             .catch(error => {
                 console.error('Errore durante il fetch (mouseup):', error);

@@ -13,7 +13,7 @@ if ($conn === false) {
 
 if(checkData()){
     $data = json_encode([
-        'Direzione' => (int)$_POST['Direzione'],
+        'Comando' => (int)$_POST['Comando'],
         'Velocita' => (int)$_POST['Velocita']
     ]);
     socket_write($socket, $data, strlen($data));
@@ -26,16 +26,16 @@ else{
 socket_close($socket);
 
 function checkData(){
-    if(!isset($_POST['Direzione']) || !isset($_POST['Velocita'])){
+    if(!isset($_POST['Comando']) || !isset($_POST['Velocita'])){
         return false;
     }
-    if(!is_numeric($_POST['Direzione']) || !is_numeric($_POST['Velocita'])){
+    if(!is_numeric($_POST['Comando']) || !is_numeric($_POST['Velocita'])){
         return false;
     }
     if($_POST['Velocita'] < 0 || $_POST['Velocita'] > 100){
         return false;
     }
-    if($_POST['Direzione'] < 0 || $_POST['Direzione'] > 4){
+    if($_POST['Comando'] < 0 || $_POST['Comando'] > 8){
         return false;
     }
     return true;

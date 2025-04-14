@@ -163,6 +163,9 @@ int main() {
     DWORD bytesAvailable;
 
     while (1) {
+        int random_followLine = rand() % 4;
+        float random_ultrasonicDistance = rand() % 100 + 1;
+        send_data(hSerial, random_followLine, random_ultrasonicDistance);
         COMSTAT status;
         if (ClearCommError(hSerial, NULL, &status)) {
             bytesAvailable = status.cbInQue;

@@ -72,7 +72,7 @@ ser = serial.Serial(porta, baudrate, timeout=0.1)
 START_BYTE = b'\xaa'
 HEADER_FOLLOW_LINE = b'\x01'
 HEADER_ULTRASONIC = b'\x02'
-HEADER_DIREZIONE = b'\x03'
+HEADER_COMANDO = b'\x03'
 HEADER_VELOCITA = b'\x04'
 END_BYTE = b'\xff'
 
@@ -125,11 +125,11 @@ def unpack():
     
 def pack(data):
     """Pack dei dati da inviare alla seriale"""
-    data_dir = struct.pack('B', data["Direzione"])
+    data_cmd = struct.pack('B', data["Comando"])
     data_vel = struct.pack('B', data["Velocita"])
-    checksum = HEADER_DIREZIONE[0] ^ data_dir[0] ^ HEADER_VELOCITA[0] ^ data_vel[0]
+    checksum = HEADER_COMANDO[0] ^ data_cmd[0] ^ HEADER_VELOCITA[0] ^ data_vel[0]
     checksum = struct.pack('B', checksum)
-    packet = START_BYTE + HEADER_DIREZIONE + data_dir + HEADER_VELOCITA + data_vel + checksum + END_BYTE
+    packet = START_BYTE + HEADER_COMANDO + data_cmd + HEADER_VELOCITA + data_vel + checksum + END_BYTE
     return packet
 
 def serialListener():

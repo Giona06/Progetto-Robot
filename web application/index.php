@@ -9,10 +9,14 @@
 </head>
 <body>
     Velocit&agrave; <input type="number" id="velocita" name="velocita" min="1" max="100" value="50">
-    <button class="direzione" value="1">Vai Avanti</button>
-    <button class="direzione" value="2">Vai Indietro</button>
-    <button class="direzione" value="3">Ruota a Sinistra</button>
-    <button class="direzione" value="4">Ruota a Destra</button>
+    <button class="comando" value="1">Vai Avanti</button>
+    <button class="comando" value="2">Vai Indietro</button>
+    <button class="comando" value="3">Ruota a Sinistra</button>
+    <button class="comando" value="4">Ruota a Destra</button>
+    <button class="comando" value="5">Alza Braccio</button>
+    <button class="comando" value="6">Abbassa Braccio</button>
+    <button class="comando" value="7">Apri Pinza</button>
+    <button class="comando" value="8">Chiudi Pinza</button>
     <div id="sensor-data">
         <p>Linea Seguita: <span id="linea"></span></p>
         <p>Valore Ultrasonico: <span id="ultrasonico"></span></p>
