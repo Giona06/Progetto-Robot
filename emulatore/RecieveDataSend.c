@@ -23,7 +23,7 @@ uint8_t xor_checksum(uint8_t *data, size_t length) {
     return checksum;
 }
 
-// Function to unpack data from the serial port
+// Funzione unpack pacchetto
 int unpack_data(HANDLE hSerial) {
     uint8_t start_byte;
     uint8_t header_cmd;
@@ -129,17 +129,22 @@ int send_data(HANDLE hSerial, int followLine, float ultrasonicDistance) {
 }
 
 int main() {
-    // Open the serial port (COM4)
-    HANDLE hSerial = CreateFile(
-        "COM4", GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL
-    );
+    int numero_porta = 0;
+    printf("Inserisci il numero della porta COM: ");
+    scanf("%d", &numero_porta);
+    char porta[8];
+    sprintf(porta, "COM%d", numero_porta);
+    printf("Porta selezionata: %s\n", porta);
+
+    HANDLE hSerial = CreateFile(porta, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+
 
     if (hSerial == INVALID_HANDLE_VALUE) {
         printf("Error opening serial port\n");
         return 1;
     }
 
-    // Set the serial port parameters (9600 baud, 8 data bits, no parity, 1 stop bit)
+    // Parametri porta seriale
     DCB dcbSerialParams = { 0 };
     dcbSerialParams.DCBlength = sizeof(dcbSerialParams);
 
