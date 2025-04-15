@@ -7,7 +7,7 @@ from requests.auth import HTTPBasicAuth
 import struct
 import json
 
-DEBUG = True
+DEBUG = False
 
 #Costanti Server
 PHP_SERVER_URL = 'http://localhost/capolavoro/ricezione.php'

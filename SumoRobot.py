@@ -160,7 +160,7 @@ def move(comando : Comando, velocita: int):
     print(f"[SERIALE] → {packet}")
     ser.write(packet)
 
-####Programma princimale
+####Programma principale
 
 def zona_bianca():
     move(Comando.AVANTI, 30)
@@ -184,8 +184,8 @@ def spingi_ostacolo():
         move(Comando.AVANTI, 100)
         print("[SERIALE] → Ostacolo rilevato")
 
-def socketListener():
-    """Riceve dati da socket e li invia alla seriale"""
+def programma():
+    """Funzione principale del programma"""
     input("Premere invio per avviare il programma") #Accendere il robot prima di avviare il programma
     while True:
         zona_bianca()
@@ -194,7 +194,7 @@ def socketListener():
 ###
 
 threading.Thread(target=serialListener, daemon=True).start()
-threading.Thread(target=socketListener, daemon=True).start()
+threading.Thread(target=programma, daemon=True).start()
 
 print("[SERVIZIO] Bridge attivo")
 try:
