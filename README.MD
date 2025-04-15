@@ -1,4 +1,8 @@
-# Non so ancora come chiamarlo
+# Progetto Robot
+
+## Idee
+
+L'idea principale del progetto è dare possibilità al robot di essere controllabile da una applicazione web per simulare un controllo da remoto
 
 ## Requisiti
 
