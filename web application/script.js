@@ -31,4 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
+    function fetchSensorData() {
+        fetch('leggi.php')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('linea').innerText = data.FollowLine;
+                document.getElementById('ultrasonico').innerText = data.Ultrasonic;
+            })
+            .catch(error => console.error('Error fetching sensor data:', error));
+    }
+
+    setInterval(fetchSensorData, 100);
 });
