@@ -8,17 +8,37 @@
     <script src="script.js"></script>
 </head>
 <body>
-    Velocit&agrave; <input type="number" id="velocita" name="velocita" min="1" max="100" value="50">
-    <button class="comando" value="1">Vai Avanti</button>
-    <button class="comando" value="2">Vai Indietro</button>
-    <button class="comando" value="3">Ruota a Sinistra</button>
-    <button class="comando" value="4">Ruota a Destra</button>
-    <button class="comando" value="5">Alza Braccio</button>
-    <button class="comando" value="6">Abbassa Braccio</button>
-    <button class="comando" value="7">Apri Pinza</button>
-    <button class="comando" value="8">Chiudi Pinza</button>
+<div class="velocita-container">
+        <label for="velocita">Velocità</label>
+        <input type="number" id="velocita" name="velocita" min="1" max="100" value="50">
+    </div>
+
+    <div class="stile-controller">
+        <div class="pannello-movimento">
+            <div class="joystick">
+                <button class="comando movimento su" value="1">A</button>
+                <div class="middle-row">
+                    <button class="comando movimento sinistra" value="3">SX</button>
+                    <div class="spazio"></div>
+                    <button class="comando movimento destra" value="4">DX</button>
+                </div>
+                <button class="comando movimento giu" value="2">I</button>
+            </div>
+        </div>
+
+        <div class="pannello-azione joystick">
+            <button class="comando azione su " value="5">Alza</button>
+            <div class="middle-row">
+                <button class="comando azione sinistra " value="7">Apri</button>
+                <div class="spazio"></div>
+                <button class="comando azione destra " value="8">Chiudi</button>
+            </div>
+            <button class="comando azione giu " value="6">Abbassa</button>
+        </div>
+    </div>
+
     <div id="sensor-data">
-        <p>Linea Seguita: <span id="linea"></span></p>
+        <p>Valore FollowLine: <span id="linea"></span></p>
         <p>Valore Ultrasonico: <span id="ultrasonico"></span></p>
     </div>
     <script>

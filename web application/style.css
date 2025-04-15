@@ -1,0 +1,159 @@
+body {
+    font-family: sans-serif;
+    margin: 40px; 
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.velocita-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px; 
+    background-color: #e0e0e0;
+    padding: 30px;
+    border-radius: 15px; 
+    box-shadow: 4px 4px 9px rgba(0, 0, 0, 0.1); 
+}
+
+.velocita-container label {
+    font-weight: bold;
+    margin-bottom: 12px; 
+    font-size: 1.4em; 
+}
+
+.velocita-container input[type="number"] {
+    padding: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 140px;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.stile-controller {
+    display: flex;
+    gap: 80px;
+}
+
+.pannello-movimento, .pannello-azione {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ddd;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 5px 5px 11px rgba(0, 0, 0, 0.15); 
+}
+
+.pannello-movimento .joystick, .pannello-azione .joystick {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: auto auto auto;
+    gap: 25px;
+}
+
+.middle-row {
+    grid-row: 2;
+    grid-column: 1 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.spazio {
+    width: 70px;
+    height: 70px;
+}
+
+.comando {
+    border: none;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 0.9;
+    flex-direction: column; 
+    width: 90px; 
+    height: 90px; 
+    padding: 10px; 
+}
+
+.comando br {
+    display: block;
+}
+
+.comando:hover {
+    background-color: #45a049;
+}
+
+
+
+
+.pannello-movimento .comando.movimento.su { 
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.pannello-movimento .comando.movimento.giu { 
+    grid-row: 3;
+    grid-column: 2;
+}
+
+.pannello-movimento .comando.movimento.sinistra { 
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.pannello-movimento .comando.movimento.destra { 
+    grid-row: 2;
+    grid-column: 3;
+}
+
+.pannello-azione .comando.azione.su { 
+    grid-row: 1;
+    grid-column: 2;
+}
+
+.pannello-azione .comando.azione.giu {
+    grid-row: 3;
+    grid-column: 2;
+}
+
+.pannello-azione .comando.azione.sinistra {
+    grid-row: 2;
+    grid-column: 1;
+}
+
+.pannello-azione .comando.azione.destra {
+    grid-row: 2;
+    grid-column: 3;
+}
+
+#sensor-data {
+    margin-top: 60px;
+    background-color: #e0f7fa;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.1);
+    font-size: 1.3em;
+}
+
+#sensor-data p {
+    margin: 15px 0;
+}
+
+#sensor-data span {
+    font-weight: bold;
+    color: #00897b;
+}
