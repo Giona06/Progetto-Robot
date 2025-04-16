@@ -13,14 +13,14 @@ Insieme all'idea precedente, si è ipotizzato se sia possibile una pseudo progra
 #### Parte Applicazione
 
 Per rendere possibile la comunicazione tra il robot e l'applicazione web servirebbe un modulo wifi, ma visto che c'è solo il modulo Bluetooth installato questo non è possibile farlo direttamente.  
-Quindi per aggirare il problema ho pensato di fare un servizio "Bridge" in python che prende i dati dal canale seriale virtuale(Bluetooth) e con essi fa una richiesta(POST) al Server Web che li salva e visualizza(Serial -> Bridge -> Server) e vice versa(Server -> Bridge -> Serial).  
+Quindi per aggirare il problema ho pensato di fare un servizio "Bridge" in python che prende i dati dal canale seriale virtuale(Bluetooth) e con essi fa una richiesta(POST) al Server Web che li salva e visualizza(Serial → Bridge → Server) e vice versa(Server → Bridge → Serial).  
 Questo servizio farà appunto da "ponte" per ovviare al problema del modulo wifi.
 
 #### Parte Server Web
 
 L'applicazione Web è "divisa" in 2 sezioni principali, la parte di controllo del robot, dove è possibile impostare la velocità e tramite relativi pulsanti fare certi muovimenti, e la parte di visualizzazione dei dati dei sensori del robot.  
 Ci sarà uno script in js che si occupa di aggiornare i dati visualizzati ogni tot e rendere funzionanti i pulsanti facendo delle fetch per inviare i dati al server.  
-Il server successivamente aprirà un socket, in modo da comunicare con il servizio di Bridge, e invierà i dati ad esso(Server -> Bridge -> Serial).
+Il server successivamente aprirà un socket, in modo da comunicare con il servizio di Bridge, e invierà i dati ad esso(Server → Bridge → Serial).
 
 ### Funzionamento
 
@@ -37,11 +37,11 @@ Una volta ricevuti li "impacchetta" e li invia alla seriale(robot).
 In entrambi i casi i pacchetti per lo scambio dei dati con la seriale hanno la seguente struttura:
 
 ```py
-Robot -> Bridge
+Robot → Bridge
 #[START_BYTE(1), HEADER_FOLLOW_LINE(1), DATA_FOLLOWLINE(1), HEADER_ULTRASONIC(1), DATA_ULTRASONIC(4), CHECKSUM(1), END_BYTE(1)]  
 Data ultrasonic è di tipo float per quello usa 4 byte
 
-Bridge -> Robot
+Bridge → Robot
 #[START_BYTE(1), HEADER_COMANDO(1), DATA_COMANDO(1), HEADER_VELOCITA(1), DATA_VELOCITA(1), CHECKSUM(1), END_BYTE(1)]
 
 START_BYTE = b'\xaa'
@@ -103,6 +103,7 @@ A sinistra il processo in Python e a destra l'emulatore.
     ```
 
 - [XAMPP](https://www.apachefriends.org/it/index.html) → server PHP locale.
+- [mBlock](https://mblock.cc/) → programmazione robot
 
 ### Installazione porte seriali virtuali e monitor seriale (Test Only)
 
@@ -152,26 +153,39 @@ Per verificare se tutto è stato eseguito correttamente seguire i seguenti passa
     ![Verifica](/assets/verifica.png)  
 Si dovrebbe visualizzare una situazione simile all'immagine soprastante.
 
+### Configurazione XAMPP
+
+1. Prendere i file contenuti in `/web application/` ed inserirli all'interno di una cartella in htdocs di XAMPP.
+2. Aprire XAMPP, premere su `Config` di Apache → `PHP(php.ini)` (percorso file: `C:\xampp\php\php.ini`).
+3. Cercare `;extension=sockets` e togliere il `;` per abilitare i sockets per php.
+
+### Scaricare Estensioni su mBlock
+
+1. Sul programma mBlock premere sul pulsante `Estensioni`  
+    ![pulsante](assets/pulsante.png)
+2. Seleziona e scarica  `AdvancedArduinoCode` e `Switch Case`
+
+    ![estensioni](assets/estensioni.png)
+
 ### Utilizzo applicazione web
 
 Per utilizzare l'applicazione web effettuare i seguenti passaggi in ordine:
 
-1. Prendere i file contenuti in `/web application/` ed inserirli all'interno di una cartella in htdocs di XAMPP.
-2. Aprire `SerialBridge.py` e modificare la costante PHP_SERVER_URL in modo da raggiungere sempre il file `ricezione.php`.
+1. Aprire `SerialBridge.py` e modificare la costante PHP_SERVER_URL in modo da raggiungere sempre il file `ricezione.php`.
 
     ```py
     PHP_SERVER_URL = 'http://localhost/{cartella_htdocs}/ricezione.php'
     ```
 
-3. Avviare `SerialBridge.py` e selezionare la porta COM che corrisponde al bluetooth del robot e il baudrate (default 9600).
-4. Avviare il server Apache da XAMPP.
-5. Seguire i passaggi se si dispone o non del robot.
+2. Avviare `SerialBridge.py` e selezionare la porta COM che corrisponde al bluetooth del robot e il baudrate (default 9600).
+3. Avviare il server Apache da XAMPP.
+4. Seguire i passaggi se si dispone o non del robot.
 
     - Se si dispone del robot, caricare `Progetto Robot.mblock` nel robot e accenderlo.
     - Se non si dispone del robot, avviare `Recieve.exe` o `RecieveDataSend.exe`(simula i sensori) e selezionare la porta COM emulata precedentemente.
 
-6. Aprire dal browser la pagina web.
-7. Usa i pulsanti per controllare il robot.
+5. Aprire dal browser la pagina web.
+6. Usa i pulsanti per controllare il robot.
 
     ![pagina](assets/pagina.png)
 
@@ -189,11 +203,20 @@ Come procedere:
 
 Per utilizzarlo e vederne il funzionamento:
 
-1. Va avviato il processo in Python per primo, che richiede la porta COM e il baudrate(default 9600), il processo poi rimarrà in attesa di input per avviare il programma.
-2. Seguire i passaggi se si dispone o non del robot.
+1. Seguire i passaggi se si dispone o non del robot.
     - Se si dispone del robot, caricare `Progetto Robot.mblock` nel robot e accenderlo.
     - Se non si dispone del robot, avviare `Recieve.exe` o `RecieveDataSend.exe`(simula i sensori) e selezionare la porta COM emulata precedentemente.
-3. Tornando su Python, premere un qualsiasi tasto per avviare il programma e vedere il funzionamento.
+2. Avviare il processo in Python, che richiede la porta COM e il baudrate(default 9600), il processo poi rimarrà in attesa di input per avviare il programma.
+3. Premere un qualsiasi tasto per avviare il programma e vedere il funzionamento(se con gli emulatori non funziona, avviare prima il processo in python, poi l'emulatore, e infine premere un tasto per avviare il programma).
+
+## Considerazioni 16/04/2025
+
+In laboratorio, avendo il robot a disposizione, siamo riusciti a testare il programma. C'è stato un problema con il collegamento bluetooth, forse perché il modulo è limitato solo alle app di makeblock o qualcosa del genere, ma comunque usando il cavo si è riuscito ad aggirare il problema, sul programma `Progetto Robot.mblock` ho cambiato la serial da `Serial3(bluetooth)` a `Serial(Usb)` e il robot ha funzionato come previsto. Prima abbiamo provato a comandare il robot dal servizio web ed infine abbiamo provato anche il programma in python per mantenere il robot all'interno di un'area delimitata da bordi neri, ed entrambi hanno funzionato come previsto.  
+Quindi infine l'unico problema sarebbe trovare un modo per sistemare il collegamento bluetooth, che una volta risolto si potrà programmare il robot in python senza cavo e senza il bisogno di ricaricare il programma sul robot.
+
+![modifica](assets/cambiato.png)  
+
+Ho sottolineato in rosso le modifiche apportate per cambiare la serial da Serial3 a Serial
 
 ## Autori
 
