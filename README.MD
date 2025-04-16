@@ -60,7 +60,7 @@ Il server riceve i dati e li salva su un json, in modo che i client che si conne
 
 ![ricezione](assets/ricezione.png)
 
-Dal lato client lo script js ad intervallo continuo effettua delle richieste (fetch) a leggi.php che restituisce un json contenente i dati dei sensori. Lo script aggiunge anche una funzione a tutti i pulsanti: nel momento in cui si preme il pulsante, verrà inviata una fetch a `invia.php` contenente il valore del pulsante e la velocità selezionata invece quando si rilascia il pulsante, viene inviata un'altra fetch con entrambi i valori a 0 (servirà a bloccare il robot).
+Dal lato client lo script js ad intervallo continuo effettua delle richieste (fetch) a `leggi.php` che restituisce un json contenente i dati dei sensori. Lo script aggiunge anche una funzione a tutti i pulsanti: nel momento in cui si preme il pulsante, verrà inviata una fetch a `invia.php` contenente il valore del pulsante e la velocità selezionata invece quando si rilascia il pulsante, viene inviata un'altra fetch con entrambi i valori a 0 (servirà a bloccare il robot).
 
 Dal lato server, una volta che invia.php riceve la richesta con i dati, questo avvia una connessione tramite socket con il servizio di Brige che a sua volta trasmetterà i dati al robot per controllaro.
 
@@ -156,7 +156,7 @@ Si dovrebbe visualizzare una situazione simile all'immagine soprastante.
 
 Per utilizzare l'applicazione web effettuare i seguenti passaggi in ordine:
 
-1. Prendere i file contenuti in `/web application/| ed inserirli all'interno di una cartella in htdocs di XAMPP.
+1. Prendere i file contenuti in `/web application/' ed inserirli all'interno di una cartella in htdocs di XAMPP.
 2. Aprire `SerialBridge.py` e modificare la costante PHP_SERVER_URL in modo da raggiungere sempre il file `ricezione.php`.
 
     ```py
