@@ -156,7 +156,7 @@ Si dovrebbe visualizzare una situazione simile all'immagine soprastante.
 
 Per utilizzare l'applicazione web effettuare i seguenti passaggi in ordine:
 
-1. Prendere i file contenuti in `/web application/' ed inserirli all'interno di una cartella in htdocs di XAMPP.
+1. Prendere i file contenuti in `/web application/` ed inserirli all'interno di una cartella in htdocs di XAMPP.
 2. Aprire `SerialBridge.py` e modificare la costante PHP_SERVER_URL in modo da raggiungere sempre il file `ricezione.php`.
 
     ```py
