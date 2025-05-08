@@ -3,6 +3,7 @@ import threading
 import time
 import random
 import struct
+import RobotBridge as robot
 from enum import Enum
 
 class Comando(Enum):

@@ -164,7 +164,7 @@ int main() {
         CloseHandle(hSerial);
         return 1;
     }
-
+    PurgeComm(hSerial, PURGE_RXCLEAR | PURGE_TXCLEAR);
     DWORD bytesAvailable;
 
     while (1) {
